@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suporte OS — Product Case Study · Letícia Otoni</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap');
+
+  :root{
+    --bg:#0a1512;
+    --bg-2:#0d1f1a;
+    --panel:#0f241e;
+    --line:#1c3830;
+    --mint:#4ade80;
+    --mint-dim:#2d5040;
+    --text:#e8f0ec;
+    --text-dim:#7fa896;
+    --text-dimmer:#4f6b60;
+    --white:#ffffff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.mono{font-family:'Space Grotesk',sans-serif;}
+  .num,.kpi-num,.tag,.eyebrow{font-family:'IBM Plex Mono',monospace;}
+
+  ::selection{background:var(--mint);color:var(--bg);}
+
+  /* ===== NAV ===== */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:22px 48px;
+    background:rgba(10,21,18,0.85);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-logo{font-weight:700;font-size:15px;letter-spacing:0.5px;color:var(--white);}
+  .nav-logo span{color:var(--mint);}
+  .nav-links{display:flex;gap:32px;}
+  .nav-links a{color:var(--text-dim);text-decoration:none;font-size:13px;font-weight:500;transition:color .2s;}
+  .nav-links a:hover{color:var(--mint);}
+  .nav-cta{
+    background:var(--mint);color:var(--bg);
+    padding:9px 18px;border-radius:6px;
+    font-size:13px;font-weight:700;text-decoration:none;
+  }
+  @media(max-width:760px){.nav-links{display:none;} nav{padding:18px 22px;}}
+
+  /* ===== HERO ===== */
+  .hero{
+    min-height:100vh;
+    display:flex;flex-direction:column;justify-content:center;
+    padding:140px 48px 80px;
+    position:relative;
+    background:
+      radial-gradient(ellipse 900px 500px at 15% 0%, rgba(74,222,128,0.08), transparent),
+      var(--bg);
+  }
+  .hero-grid-bg{
+    position:absolute;inset:0;opacity:0.35;pointer-events:none;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:64px 64px;
+    mask-image:radial-gradient(ellipse 800px 500px at 20% 20%, black, transparent);
+  }
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    color:var(--mint);font-size:12px;letter-spacing:2px;
+    text-transform:uppercase;font-weight:500;
+    margin-bottom:26px;
+    border:1px solid var(--mint-dim);
+    background:rgba(74,222,128,0.05);
+    padding:7px 14px;border-radius:20px;
+    width:fit-content;
+    position:relative;z-index:1;
+  }
+  .eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--mint);box-shadow:0 0 8px var(--mint);animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+
+  .hero h1{
+    font-size:clamp(38px, 6.5vw, 78px);
+    font-weight:700;line-height:1.02;
+    letter-spacing:-2px;
+    color:var(--white);
+    max-width:900px;
+    position:relative;z-index:1;
+  }
+  .hero h1 .accent{color:var(--mint);}
+  .hero-sub{
+    margin-top:26px;font-size:17px;color:var(--text-dim);
+    max-width:560px;line-height:1.65;
+    position:relative;z-index:1;
+  }
+  .hero-actions{display:flex;gap:14px;margin-top:38px;position:relative;z-index:1;flex-wrap:wrap;}
+  .btn-primary{
+    background:var(--mint);color:var(--bg);
+    padding:14px 26px;border-radius:8px;
+    font-weight:700;font-size:14px;text-decoration:none;
+    display:inline-flex;align-items:center;gap:8px;
+    transition:transform .2s, box-shadow .2s;
+  }
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(74,222,128,0.25);}
+  .btn-secondary{
+    border:1px solid var(--line);color:var(--text);
+    padding:14px 26px;border-radius:8px;
+    font-weight:600;font-size:14px;text-decoration:none;
+    transition:border-color .2s, background .2s;
+  }
+  .btn-secondary:hover{border-color:var(--mint-dim);background:var(--panel);}
+
+  /* hero stats strip */
+  .hero-stats{
+    display:flex;gap:0;margin-top:70px;
+    border-top:1px solid var(--line);
+    position:relative;z-index:1;
+    flex-wrap:wrap;
+  }
+  .hero-stat{
+    flex:1;min-width:130px;
+    padding:22px 24px 0;
+    border-right:1px solid var(--line);
+  }
+  .hero-stat:last-child{border-right:none;}
+  .hero-stat .num{font-size:30px;font-weight:700;color:var(--mint);}
+  .hero-stat .lbl{font-size:11px;color:var(--text-dimmer);text-transform:uppercase;letter-spacing:1px;margin-top:4px;}
+
+  /* ===== SECTION SHARED ===== */
+  section{padding:110px 48px;position:relative;}
+  .section-inner{max-width:1080px;margin:0 auto;}
+  .section-head{margin-bottom:56px;max-width:640px;}
+  .section-eyebrow{color:var(--mint);font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:500;margin-bottom:14px;}
+  .section-head h2{font-size:clamp(28px,4vw,42px);font-weight:700;color:var(--white);letter-spacing:-1px;line-height:1.1;}
+  .section-head p{color:var(--text-dim);font-size:15px;margin-top:16px;line-height:1.7;}
+
+  /* ===== PROBLEM / SOLUTION ===== */
+  .problem-section{background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .ps-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;}
+  .ps-card{background:var(--bg-2);padding:36px;}
+  .ps-card.before{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);}
+  .ps-card.after{background:linear-gradient(180deg, rgba(74,222,128,0.05), transparent);}
+  .ps-tag{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;padding:5px 10px;border-radius:5px;display:inline-block;margin-bottom:18px;}
+  .ps-card.before .ps-tag{background:rgba(255,255,255,0.06);color:var(--text-dim);}
+  .ps-card.after .ps-tag{background:rgba(74,222,128,0.12);color:var(--mint);}
+  .ps-card ul{list-style:none;}
+  .ps-card li{
+    padding:11px 0;border-bottom:1px solid var(--line);
+    font-size:14px;color:var(--text-dim);
+    display:flex;gap:10px;align-items:flex-start;
+  }
+  .ps-card li:last-child{border-bottom:none;}
+  .ps-card.before li::before{content:'×';color:#e2544c;font-weight:700;flex-shrink:0;}
+  .ps-card.after li::before{content:'✓';color:var(--mint);font-weight:700;flex-shrink:0;}
+
+  /* ===== MODULES / BENTO ===== */
+  .bento{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;}
+  .bento-item{
+    background:var(--panel);border:1px solid var(--line);
+    border-radius:14px;padding:28px;
+    transition:border-color .25s, transform .25s;
+  }
+  .bento-item:hover{border-color:var(--mint-dim);transform:translateY(-3px);}
+  .bento-item.big{grid-column:span 4;}
+  .bento-item.small{grid-column:span 2;}
+  .bento-item.half{grid-column:span 3;}
+  @media(max-width:800px){.bento-item.big,.bento-item.small,.bento-item.half{grid-column:span 6;}}
+  .bento-icon{
+    width:38px;height:38px;border-radius:9px;
+    background:rgba(74,222,128,0.1);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--mint);font-size:17px;margin-bottom:18px;
+  }
+  .bento-item h3{font-size:16px;font-weight:700;color:var(--white);margin-bottom:8px;}
+  .bento-item p{font-size:13.5px;color:var(--text-dim);line-height:1.65;}
+  .bento-shot{width:100%;border-radius:8px;margin-top:16px;border:1px solid var(--line);}
+
+  /* ===== AI SECTION ===== */
+  .ai-section{
+    background:
+      radial-gradient(ellipse 700px 400px at 85% 20%, rgba(74,222,128,0.06), transparent),
+      var(--bg);
+  }
+  .ai-flow{display:flex;align-items:center;gap:0;margin:50px 0;overflow-x:auto;padding-bottom:10px;}
+  .ai-node{
+    flex-shrink:0;background:var(--panel);border:1px solid var(--line);
+    border-radius:10px;padding:16px 20px;text-align:center;min-width:150px;
+  }
+  .ai-node.core{border-color:var(--mint-dim);background:rgba(74,222,128,0.06);}
+  .ai-node .n-title{font-size:12.5px;font-weight:700;color:var(--white);}
+  .ai-node .n-sub{font-size:10.5px;color:var(--text-dimmer);margin-top:3px;}
+  .ai-arrow{color:var(--text-dimmer);font-size:18px;padding:0 14px;flex-shrink:0;}
+
+  .ai-modules{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px;}
+  .ai-mod{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:24px;}
+  .ai-mod .mod-num{color:var(--mint);font-size:11px;font-weight:700;margin-bottom:10px;}
+  .ai-mod h3{font-size:15px;color:var(--white);margin-bottom:8px;}
+  .ai-mod p{font-size:13px;color:var(--text-dim);line-height:1.6;}
+  @media(max-width:760px){.ai-modules{grid-template-columns:1fr;}}
+
+  /* ===== STACK ===== */
+  .stack-tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px;}
+  .stack-tag{
+    border:1px solid var(--line);color:var(--text-dim);
+    padding:9px 16px;border-radius:8px;font-size:13px;font-weight:500;
+    display:flex;align-items:center;gap:8px;
+  }
+  .stack-tag .dot{width:6px;height:6px;border-radius:50%;background:var(--mint);}
+
+  /* ===== ROLE TABLE ===== */
+  .role-list{display:flex;flex-direction:column;gap:2px;margin-top:20px;}
+  .role-row{display:grid;grid-template-columns:180px 1fr;gap:24px;padding:16px 0;border-bottom:1px solid var(--line);align-items:center;}
+  .role-row .r-label{font-size:14px;font-weight:600;color:var(--white);}
+  .role-bar-track{height:6px;background:var(--line);border-radius:3px;overflow:hidden;}
+  .role-bar-fill{height:100%;background:var(--mint);border-radius:3px;}
+  @media(max-width:600px){.role-row{grid-template-columns:1fr;gap:8px;}}
+
+  /* ===== FOOTER / CTA ===== */
+  .cta-section{
+    text-align:center;padding:130px 48px;
+    background:var(--bg-2);border-top:1px solid var(--line);
+  }
+  .cta-section h2{font-size:clamp(30px,5vw,52px);font-weight:700;color:var(--white);letter-spacing:-1.5px;max-width:700px;margin:0 auto;line-height:1.1;}
+  .cta-section .accent{color:var(--mint);}
+  .cta-section p{color:var(--text-dim);margin-top:20px;font-size:16px;}
+  .cta-actions{display:flex;gap:14px;justify-content:center;margin-top:36px;flex-wrap:wrap;}
+
+  footer{
+    padding:36px 48px;display:flex;justify-content:space-between;align-items:center;
+    border-top:1px solid var(--line);
+  }
+  footer span{color:var(--text-dimmer);font-size:12.5px;}
+  footer .f-name{color:var(--text-dim);font-weight:600;}
+
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease, transform .7s ease;}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Suporte<span>OS</span></div>
+  <div class="nav-links">
+    <a href="#problema">O Problema</a>
+    <a href="#produto">Produto</a>
+    <a href="#ia">Inteligência Artificial</a>
+    <a href="#atuacao">Minha Atuação</a>
+  </div>
+  <a href="#contato" class="nav-cta">Contato</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="eyebrow">Product Case Study · Em produção desde 2025</div>
+  <h1>Da planilha dispersa<br>ao sistema operacional<br><span class="accent">que roda em produção.</span></h1>
+  <p class="hero-sub">Um problema real, identificado na rotina — sem pedido, sem orçamento formal. A resposta foi construir um produto de verdade: centralizado, automatizado e com inteligência artificial aplicada ao dia a dia da operação.</p>
+  <div class="hero-actions">
+    <a href="#produto" class="btn-primary">Ver o produto →</a>
+    <a href="#atuacao" class="btn-secondary">Minha atuação completa</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">180+</div><div class="lbl">Páginas monitoradas</div></div>
+    <div class="hero-stat"><div class="num">40+</div><div class="lbl">Países</div></div>
+    <div class="hero-stat"><div class="num">1.6k</div><div class="lbl">Tickets Pipefy</div></div>
+    <div class="hero-stat"><div class="num">4</div><div class="lbl">Módulos de IA</div></div>
+    <div class="hero-stat"><div class="num">9</div><div class="lbl">Usuários ativos</div></div>
+  </div>
+</div>
+
+<!-- PROBLEMA -->
+<section id="problema" class="problem-section">
+  <div class="section-inner">
+    <div class="section-head reveal">
+      <div class="section-eyebrow">O ponto de partida</div>
+      <h2>A operação vivia espalhada em planilhas.</h2>
+      <p>Cada processo — tarefas, páginas, tickets, indicadores — tinha seu próprio arquivo. Ninguém pediu uma solução. A oportunidade foi identificada na rotina, e resolvida por iniciativa própria, em paralelo ao trabalho diário de atendimento.</p>
+    </div>
+    <div class="ps-grid reveal">
+      <div class="ps-card before">
+        <span class="ps-tag">Antes</span>
+        <ul>
+          <li>Informações descentralizadas em múltiplos arquivos</li>
+          <li>Atualização manual, sujeita a erro</li>
+          <li>Retrabalho constante na consolidação</li>
+          <li>Zero alertas — problemas descobertos tarde</li>
+          <li>Decisões lentas por falta de dados em tempo real</li>
+        </ul>
+      </div>
+      <div class="ps-card after">
+        <span class="ps-tag">Com o Suporte OS</span>
+        <ul>
+          <li>Um único sistema centralizando toda a operação</li>
+          <li>OCR extraindo métricas automaticamente de prints</li>
+          <li>Check diário e relatórios com validação automática</li>
+          <li>Alertas de risco em tempo real via Slack</li>
+          <li>IA gerando insights semanais e mensais</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUTO -->
+<section id="produto">
+  <div class="section-inner">
+    <div class="section-head reveal">
+      <div class="section-eyebrow">O produto</div>
+      <h2>Um painel para cada tipo de decisão.</h2>
+      <p>Do analista que registra o check diário ao gestor que precisa de uma visão macro da operação em 40+ países — cada módulo foi desenhado em torno de um uso real.</p>
+    </div>
+
+    <div class="bento reveal">
+      <div class="bento-item big">
+        <div class="bento-icon">◆</div>
+        <h3>Overview Executivo</h3>
+        <p>KPIs em tempo real — tickets, desempenho do time, saúde de páginas e alertas de risco. Radar de Atenção com IA e briefing semanal integrados na tela principal.</p>
+      </div>
+      <div class="bento-item small">
+        <div class="bento-icon">▤</div>
+        <h3>Check Diário</h3>
+        <p>Status de 180+ páginas por dia da semana, filtrado por responsável e país.</p>
+      </div>
+      <div class="bento-item small">
+        <div class="bento-icon">⧉</div>
+        <h3>Relatórios Semanais</h3>
+        <p>Check automático de envio, exportação em ZIP organizada por país.</p>
+      </div>
+      <div class="bento-item half">
+        <div class="bento-icon">◱</div>
+        <h3>Pipefy Dashboard</h3>
+        <p>1.617 tickets sincronizados via API GraphQL. KPIs de status, tempo médio de resolução e razão do contato.</p>
+      </div>
+      <div class="bento-item half">
+        <div class="bento-icon">☆</div>
+        <h3>Reclame Aqui</h3>
+        <p>Gestão mensal de reputação com simulador de previsão de nota e upload de evidências.</p>
+      </div>
+      <div class="bento-item big">
+        <div class="bento-icon">◐</div>
+        <h3>OCR de Métricas Meta</h3>
+        <p>Upload de print → extração automática de mensagens, taxa de resposta e tempo médio via Tesseract.js. Zero digitação manual.</p>
+      </div>
+      <div class="bento-item small">
+        <div class="bento-icon">⚙</div>
+        <h3>Configurações (Admin)</h3>
+        <p>Módulo restrito para gestão de páginas, acessos e automações.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IA -->
+<section id="ia" class="ai-section">
+  <div class="section-inner">
+    <div class="section-head reveal">
+      <div class="section-eyebrow">Inteligência artificial</div>
+      <h2>IA como camada estratégica, não enfeite.</h2>
+      <p>Quatro módulos transformando dados operacionais brutos em decisões — orquestrados via n8n, com Gemini e Groq processando o que analistas e gestores precisam saber antes de perguntar.</p>
+    </div>
+
+    <div class="ai-flow reveal">
+      <div class="ai-node"><div class="n-title">Firestore</div><div class="n-sub">Dados operacionais</div></div>
+      <div class="ai-arrow">→</div>
+      <div class="ai-node core"><div class="n-title">n8n</div><div class="n-sub">Orquestração</div></div>
+      <div class="ai-arrow">→</div>
+      <div class="ai-node core"><div class="n-title">Gemini + Groq</div><div class="n-sub">Modelos de IA</div></div>
+      <div class="ai-arrow">→</div>
+      <div class="ai-node"><div class="n-title">Insights</div><div class="n-sub">No portal + Slack</div></div>
+    </div>
+
+    <div class="ai-modules reveal">
+      <div class="ai-mod">
+        <div class="mod-num">01 · CHAT</div>
+        <h3>Assistente flutuante</h3>
+        <p>Disponível em qualquer tela do portal. Responde sobre métricas e dados operacionais sem precisar navegar pelos módulos.</p>
+      </div>
+      <div class="ai-mod">
+        <div class="mod-num">02 · AUTOMÁTICO</div>
+        <h3>Radar de Atenção</h3>
+        <p>Briefing semanal gerado sozinho via n8n — páginas em risco, inativadas e pontos que exigem atenção imediata.</p>
+      </div>
+      <div class="ai-mod">
+        <div class="mod-num">03 · INDIVIDUAL</div>
+        <h3>Análise por colaborador</h3>
+        <p>Feedback e dicas de desempenho personalizadas, cruzando dados diários com relatórios semanais de cada pessoa.</p>
+      </div>
+      <div class="ai-mod">
+        <div class="mod-num">04 · ADMIN</div>
+        <h3>Insights mensais</h3>
+        <p>Panorama completo da operação: saúde por país, variação MoM e resumo executivo pronto para copiar.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section>
+  <div class="section-inner">
+    <div class="section-head reveal">
+      <div class="section-eyebrow">Como foi construído</div>
+      <h2>Stack enxuta, sem dependência de frameworks pesados.</h2>
+      <p>JavaScript vanilla no front, Firebase como backend, Cloudflare como CDN. Deploy automático a cada push — sem build, sem complexidade desnecessária.</p>
+    </div>
+    <div class="stack-tags reveal">
+      <div class="stack-tag"><span class="dot"></span>HTML5 / CSS3 / JS ES6+</div>
+      <div class="stack-tag"><span class="dot"></span>Firebase Auth</div>
+      <div class="stack-tag"><span class="dot"></span>Cloud Firestore</div>
+      <div class="stack-tag"><span class="dot"></span>Firebase Storage</div>
+      <div class="stack-tag"><span class="dot"></span>Cloudflare Pages</div>
+      <div class="stack-tag"><span class="dot"></span>Chart.js</div>
+      <div class="stack-tag"><span class="dot"></span>Tesseract.js (OCR)</div>
+      <div class="stack-tag"><span class="dot"></span>PapaParse</div>
+      <div class="stack-tag"><span class="dot"></span>n8n</div>
+      <div class="stack-tag"><span class="dot"></span>Gemini</div>
+      <div class="stack-tag"><span class="dot"></span>Groq</div>
+      <div class="stack-tag"><span class="dot"></span>Slack API</div>
+      <div class="stack-tag"><span class="dot"></span>Pipefy GraphQL</div>
+      <div class="stack-tag"><span class="dot"></span>GitHub → CI/CD</div>
+    </div>
+  </div>
+</section>
+
+<!-- MINHA ATUAÇÃO -->
+<section id="atuacao" class="problem-section">
+  <div class="section-inner">
+    <div class="section-head reveal">
+      <div class="section-eyebrow">Minha atuação</div>
+      <h2>Do discovery ao deploy.</h2>
+      <p>Este projeto não separa quem pensa produto de quem constrói. Cada camada abaixo — discovery, decisão, código e evolução — passou pela mesma responsável.</p>
+    </div>
+    <div class="role-list reveal">
+      <div class="role-row"><div class="r-label">Product Discovery</div><div class="role-bar-track"><div class="role-bar-fill" style="width:100%"></div></div></div>
+      <div class="role-row"><div class="r-label">Product Management</div><div class="role-bar-track"><div class="role-bar-fill" style="width:100%"></div></div></div>
+      <div class="role-row"><div class="r-label">UX & Interface</div><div class="role-bar-track"><div class="role-bar-fill" style="width:100%"></div></div></div>
+      <div class="role-row"><div class="r-label">Frontend</div><div class="role-bar-track"><div class="role-bar-fill" style="width:100%"></div></div></div>
+      <div class="role-row"><div class="r-label">Banco de Dados</div><div class="role-bar-track"><div class="role-bar-fill" style="width:100%"></div></div></div>
+      <div class="role-row"><div class="r-label">Inteligência Artificial</div><div class="role-bar-track"><div class="role-bar-fill" style="width:100%"></div></div></div>
+      <div class="role-row"><div class="r-label">Integrações</div><div class="role-bar-track"><div class="role-bar-fill" style="width:100%"></div></div></div>
+      <div class="role-row"><div class="r-label">Deploy & CI/CD</div><div class="role-bar-track"><div class="role-bar-fill" style="width:100%"></div></div></div>
+      <div class="role-row"><div class="r-label">Evolução Contínua</div><div class="role-bar-track"><div class="role-bar-fill" style="width:100%"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<div class="cta-section" id="contato">
+  <div class="eyebrow" style="margin:0 auto 26px;">Leia o case completo</div>
+  <h2>Quer ver os detalhes de <span class="accent">arquitetura, personas e roadmap</span>?</h2>
+  <p>O Executive Case traz o passo a passo completo — do problema ao produto em produção.</p>
+  <div class="cta-actions">
+    <a href="#" class="btn-primary">Baixar Executive Case (PDF) →</a>
+    <a href="mailto:" class="btn-secondary">Falar com Letícia Otoni</a>
+  </div>
+</div>
+
+<footer>
+  <span class="f-name">Letícia Otoni</span>
+  <span>Suporte OS · Product Case Study · 2026</span>
+</footer>
+
+<script>
+  const revealEls = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); } });
+  },{threshold:0.15});
+  revealEls.forEach(el=>obs.observe(el));
+</script>
+
+</body>
+</html>
